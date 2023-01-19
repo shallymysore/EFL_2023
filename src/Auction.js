@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PlayerIntro from './PlayerIntro'
 import PlayerCard from './PlayerCard'
-
+import Timer from './Timer';
 
 export default function 
 Auction() {
@@ -30,7 +30,8 @@ Auction() {
     "rank": 172
   }
   const [getRandom, setData] = useState(sample);
-
+  const [isflag, setFlag] = useState(false) 
+  const [durationVar, setDurationVar] = useState(null)
 
   const handleClick = async () => {
     try {
@@ -39,6 +40,8 @@ Auction() {
         const json = await response.json();
         setData(json);
         setAmount(getRandom.salaryNumber)
+        setFlag(true)
+        setDurationVar(20)
      } else {
        console.log('Error: ' + response.status + response.body);
      }
@@ -49,10 +52,6 @@ Auction() {
 
   const buttonTexts = ["Gajjab Gujjus", "Bhaisaab's Royal Fixers", "My Lord Dilwale", "Dad's Army", "One Pitch One Hand", "Untouchaballs", "Lions of Mirzapur"];
  
-
-    
-      
-     // const getRandom = null
   return (
     <div className="App">
       <div className="top-row">
@@ -71,14 +70,20 @@ Auction() {
          <p className='shiny-text'>BID : {amount} lacs</p>
         </div>
       </div>
+      <div>
+        {isflag &&(
+          <div>
+           <Timer duration={durationVar}/>
+           </div>) }
+      </div>
       <div className="bottom-row">
       
       {buttonTexts.map((text, index) => (
         <div key={index} className="container-for-team">
           <img src={require('./auction_hand.png')} alt="my-image" className="my-image" style={{ display: selectedButton === index ? 'block' : 'none' }}/>
           <button id= {text}  onClick={() => {setSelectedButton(index)
-          setBidder(text); setAmount(amount+50)}} className="my-button teamButton">{text}</button>
-          
+          setBidder(text); setAmount(amount+50); setDurationVar(20)}} className="my-button teamButton">{text}</button>
+      
         </div>
       ))}
       <button className="action-button">Timer</button>
